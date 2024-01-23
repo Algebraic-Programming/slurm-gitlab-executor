@@ -1,0 +1,114 @@
+# Trigger this job manually only
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      when: never  # If there is a push event, do not run
+    - when: always # Otherwise run it
+
+default:
+  tags:
+    - slurm
+
+variables:
+  CI_SLURM_PARTITION:
+    value: "x86"
+    description: "Slurm partition to use"
+    options:
+      - "x86"
+      - "arm"
+  CI_SLURM_EXCLUSIVE:
+    value: "no"
+    description: "Exclusive node allocation"
+    # Accepted "yes" values: ["yes", "y", "true", "1"]
+    # Otherwise considered as "no"
+    options: [ "yes", "no" ]
+  CI_SLURM_NNODES:
+    value: "1"
+    description: "Number of nodes"
+  CI_SLURM_NTASKS:
+    value: "1"
+    description: "Number of tasks"
+  CI_SLURM_CPUS_PER_TASK:
+    value: "4"
+    description: "Number of CPUs per task"
+  CI_SLURM_MEM_PER_NODE:
+    value: "8G"
+    description: "Memory available per node"
+  CI_SLURM_TIMELIMIT:
+    value: "00-00:10:00"
+    description: "Time limit (format: days-hours:minutes:seconds)"
+  CI_KEEP_BUILD_DIR:
+    value: "no"
+    description: "Keep the build directory after the job is finished"
+    # Accepted "yes" values: ["yes", "y", "true", "1"]
+    # Otherwise considered as "no"
+    options: [ "yes", "no" ]
+  CI_LOG_LEVEL_SLURM_EXECUTOR:
+    value: "info"
+    description: "Logging level for the SLURM executor"
+    options: [ "debug", "info", "none" ]
+
+# Simple job executed in a Docker, generating an input for
+# the two SLURM jobs below
+input_docker_job:
+  tags:
+    - docker
+  image: ubuntu:latest
+  script:
+    - touch input.txt
+  artifacts:
+    paths:
+      - input.txt
+
+# Simple job executed in a SLURM job with 8 cpus
+my_parallel_slurm_job:
+  needs: [ input_docker_job ]
+  script:
+    - echo "Hello from the SLURM cluster, in job ${SLURM_JOB_NAME}!"
+    - ls input.txt # Ensure the file is available
+    - env
+    - test ${CI_SLURM_PARTITION}     = $(env | grep ^SLURM_JOB_PARTITION= | cut -d "=" -f 2)
+    - test ${CI_SLURM_NNODES}        = $(env | grep ^SLURM_NNODES= | cut -d "=" -f 2)
+    - test ${CI_SLURM_NTASKS}        = $(env | grep ^SLURM_NTASKS= | cut -d "=" -f 2)
+    - test ${CI_SLURM_CPUS_PER_TASK} = $(env | grep ^SLURM_CPUS_PER_TASK= | cut -d "=" -f 2)
+    - mem_per_node_gigabytes=${CI_SLURM_MEM_PER_NODE%G}
+    - mem_per_node_megabytes=$((${mem_per_node_gigabytes} * 1024))
+    - test ${mem_per_node_megabytes} = $(env | grep ^SLURM_MEM_PER_NODE= | cut -d "=" -f 2)
+    - touch output_from_parallel_job.txt
+  artifacts:
+    paths:
+      - output_from_parallel_job.txt
+
+# Simple job executed in a SLURM job with only 1 cpu
+my_sequential_slurm_job:
+  needs: [ input_docker_job ]
+  variables:
+    # Any SLURM variable can be overridden using the "LOCAL_" prefix
+    LOCAL_CI_SLURM_CPUS_PER_TASK: "1"
+  script:
+    - echo "Hello from the SLURM cluster, in job ${SLURM_JOB_NAME}!"
+    - ls input.txt # Ensure the file is available
+    - env
+    - test ${CI_SLURM_PARTITION}           = $(env | grep ^SLURM_JOB_PARTITION= | cut -d "=" -f 2)
+    - test ${CI_SLURM_NNODES}              = $(env | grep ^SLURM_NNODES= | cut -d "=" -f 2)
+    - test ${CI_SLURM_NTASKS}              = $(env | grep ^SLURM_NTASKS= | cut -d "=" -f 2)
+    - test ${LOCAL_CI_SLURM_CPUS_PER_TASK} = $(env | grep ^SLURM_CPUS_PER_TASK= | cut -d "=" -f 2)
+    - mem_per_node_gigabytes=${CI_SLURM_MEM_PER_NODE%G}
+    - mem_per_node_megabytes=$((${mem_per_node_gigabytes} * 1024))
+    - test ${mem_per_node_megabytes}       = $(env | grep ^SLURM_MEM_PER_NODE= | cut -d "=" -f 2)
+    - touch output_from_sequential_job.txt
+  artifacts:
+    paths:
+      - output_from_sequential_job.txt
+
+# Simple job executed in a Docker, having the exported artifacts
+# from the two SLURM jobs above
+output_docker_job:
+  needs: [ my_parallel_slurm_job, my_sequential_slurm_job ]
+  tags:
+    - docker
+  image: ubuntu:latest
+  script:
+    - ls output_from_parallel_job.txt   # Ensure the file is available
+    - ls output_from_sequential_job.txt # Ensure the file is available
+    - echo "Successful execution"
