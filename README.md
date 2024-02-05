@@ -1,34 +1,18 @@
-<pre>
-<h1> GitLab custom executor for Slurm </h1>
+# GitLab custom executor for Slurm
 
-  Copyright 2024 Huawei Technologies Co., Ltd.
+<img alt="GitHub License" src="https://img.shields.io/github/license/Algebraic-Programming/slurm-gitlab-executor?label=License&color=%23FDEE21&style=for-the-badge"> <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Algebraic-Programming/slurm-gitlab-executor/pylint.yml?logo=python&logoColor=white&label=Pylint&style=for-the-badge">
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+> ⭐ This project is actively maintained and contributions are welcomed !
 
-    https://www.apache.org/licenses/LICENSE-2.0
+This repository provides a GitLab custom executor for Slurm, allowing you to run your GitLab CI/CD jobs
+directly on your own Slurm cluster.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-</pre>
+**Requirement:** This executor does not allow SSH access, the GitLab executor needs to be running on the same machine as the Slurm frontend.
 
-This repository provides a GitLab custom executor for Slurm clusters that allows you to run your GitLab CI/CD jobs
-directly on a Slurm cluster.
-
-> ⭐ This project is still maintained and contributions are welcomed !
-
-> **Requirement:** This executor does not allow SSH access, hence the GitLab instance needs to be running on the same
-> machine as the Slurm frontend.
-
-> **Dependencies:**
-> * Python 3.6+
-> * Python modules: shutil, subprocess, sys, os, logging, time, signal, enum, typing
-> * GitLab Runner 12.1.0+
-> * UNIX environment
+**Dependencies:**
+* Python 3.6+ (no external module)
+* GitLab Runner 12.1.0+
+* UNIX environment
 
 ## Runner setup
 
@@ -171,8 +155,8 @@ directly on a Slurm cluster.
 Based on the [Slurm documentation](https://slurm.schedmd.com/sbatch.html#SECTION_INPUT-ENVIRONMENT-VARIABLES),
 with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 
-| GitLab CI variable             | CLI equivalent                                                                  | Supported | Options / Format             | Default                                |
-|--------------------------------|---------------------------------------------------------------------------------|:---------:|------------------------------|----------------------------------------|
+| GitLab CI variable             | CLI equivalent                                                                  | Supported  | Options / Format             | Default                                |
+|--------------------------------|---------------------------------------------------------------------------------|:----------:|------------------------------|----------------------------------------|
 | CI_**SLURM_PARTITION**         | [-p / --partition](https://slurm.schedmd.com/sbatch.html#OPT_partition)         |     ✅     |                              |                                        |
 | CI_**SLURM_NNODES**            | [-N / --nodes](https://slurm.schedmd.com/sbatch.html#OPT_nodes)                 |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_PER_NODE**      | [--mem](https://slurm.schedmd.com/sbatch.html#OPT_mem)                          |     ✅     |                              |                                        |
@@ -198,12 +182,12 @@ with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 
 ### Supported runner options:
 
-| GitLab CI variable                               | Description                                                                                                 | Supported | Options                 | Default |
-|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------|:---------:|-------------------------|---------|
-| **CI_KEEP_BUILD_DIR**                            | If true, the build folder in the Slurm cluster will not get removed after a successful execution of the job |     ✅     | `yes`, `no`             | `no`    |
-| **CI_LOG_LEVEL_SLURM_EXECUTOR**                  | Log level of the executor                                                                                   |     ✅     | `debug`, `info`, `none` | `info`  |
-| **SLURM_JOB_START_TIMEOUT_SECONDS**              | Time limit to wait for a Slurm job to pass from PENDING to RUNNING before considering failure, in seconds   |     ✅     |                         | `1200`  |
-| **SLURM_JOB_STOP_TIMEOUT_SECONDS_BEFORE_CANCEL** | Time limit to wait before cancelling a Slurm job that received a stop request, in seconds                   |     ✅     |                         | `30`    |
+| GitLab CI variable                               | Description                                                                                                    | Supported  | Options                 | Default |
+|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------|:----------:|-------------------------|---------|
+| **CI_KEEP_BUILD_DIR**                            | If true, the build folder in the Slurm cluster will not get removed after a successful execution of the job    |     ✅     | `yes`, `no`             | `no`    |
+| **CI_LOG_LEVEL_SLURM_EXECUTOR**                  | Log level of the executor                                                                                      |     ✅     | `debug`, `info`, `none` | `info`  |
+| **SLURM_JOB_START_TIMEOUT_SECONDS**              | Time limit to wait for a Slurm job to pass from *PENDING* to *RUNNING* before considering failure (in seconds) |     ✅     |                         | `1200`  |
+| **SLURM_JOB_STOP_TIMEOUT_SECONDS_BEFORE_CANCEL** | Time limit to wait before cancelling a Slurm job that received a stop request (in seconds)                     |     ✅     |                         | `30`    |
 
 ## Troubleshooting
 
@@ -227,3 +211,21 @@ with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 > **A:** The maximum time a job can stay active without receiving any update is 10 minutes. Past this time, the job is
 > supposed to stop by itself.
 > If it's not the case, please create an issue on GitHub and provide as much information as you can.
+
+## Copyright and Licensing
+
+<pre>
+  Copyright 2024 Huawei Technologies Co., Ltd.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</pre>
