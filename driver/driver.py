@@ -223,7 +223,7 @@ class GitLabPhases:
         logging.debug("PHASE <prepare>")
         sbatch_config = SLURMJobRequestData(
             job_name=GitLabJobInterface.get_job_uid(),
-            nodes=GitLabJobInterface.get_env("CI_SLURM_NODES"),
+            nodes=GitLabJobInterface.get_env("CI_SLURM_NNODES"),
             mem=GitLabJobInterface.get_env("CI_SLURM_MEM_PER_NODE"),
             mem_bind=GitLabJobInterface.get_env("CI_SLURM_MEM_BIND"),
             mem_per_cpu=GitLabJobInterface.get_env("CI_SLURM_MEM_PER_CPU"),

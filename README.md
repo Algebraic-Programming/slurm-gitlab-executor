@@ -158,7 +158,7 @@ with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 | GitLab CI variable             | CLI equivalent                                                                  | Supported  | Options / Format             | Default                                |
 |--------------------------------|---------------------------------------------------------------------------------|:----------:|------------------------------|----------------------------------------|
 | CI_**SLURM_PARTITION**         | [-p / --partition](https://slurm.schedmd.com/sbatch.html#OPT_partition)         |     ✅     |                              |                                        |
-| CI_**SLURM_NNODES**            | [-N / --nodes](https://slurm.schedmd.com/sbatch.html#OPT_nodes)                 |     ✅     |                              |                                        |
+| CI_**SLURM_NNODES**            | [-N / --nodes](https://slurm.schedmd.com/sbatch.html#OPT_nodes)                 |     ✅     | *minnodes[-maxnodes]*      |                                        |
 | CI_**SLURM_MEM_PER_NODE**      | [--mem](https://slurm.schedmd.com/sbatch.html#OPT_mem)                          |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_BIND**          | [--mem-bind](https://slurm.schedmd.com/sbatch.html#OPT_mem-bind)                |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_PER_CPU**       | [--mem-per-cpu](https://slurm.schedmd.com/sbatch.html#OPT_mem-per-cpu)          |     ✅     |                              |                                        |
