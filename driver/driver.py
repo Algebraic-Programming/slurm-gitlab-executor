@@ -256,6 +256,7 @@ class GitLabPhases:
         wait_until(lambda: job.is_running(), timeout_secs)
         if not job.is_running():
             job.mark_stop()
+            SLURMInterface.scancel(job.id)
             sys.exit(exit_system_failure("Failed to wait for SLURM job to not be pending"))
 
     @staticmethod
