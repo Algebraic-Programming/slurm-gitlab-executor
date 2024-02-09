@@ -20,6 +20,14 @@ def wait_until(condition, timeout_seconds: int = 10) -> bool:
     return False
 
 
+def update_file_timestamp(path: str) -> None:
+    if not os.path.exists(path):
+        return
+    if not os.path.isfile(path):
+        return
+    subprocess.Popen(f"touch -c -m {path} >/dev/null", shell=True)
+
+
 def flush_system_io(path: str) -> None:
     subprocess.Popen(f"ls -la {os.path.dirname(path)} >/dev/null",
                      shell=True)
@@ -282,7 +290,7 @@ class GitLabPhases:
         while not wait_until(lambda: is_phase_executed(), timeout_seconds=10):
             if not job.is_running():
                 break
-            flush_system_io(script_executed_file)
+            update_file_timestamp(script_executed_file)
             last_edit_timestamp = os.path.getmtime(script_log_file)
             if last_edit_timestamp != last_read_timestamp:
                 last_read_timestamp = last_edit_timestamp
