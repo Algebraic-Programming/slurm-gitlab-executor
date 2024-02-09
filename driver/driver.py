@@ -282,6 +282,7 @@ class GitLabPhases:
         while not wait_until(lambda: is_phase_executed(), timeout_seconds=10):
             if not job.is_running():
                 break
+            flush_system_io(script_executed_file)
             last_edit_timestamp = os.path.getmtime(script_log_file)
             if last_edit_timestamp != last_read_timestamp:
                 last_read_timestamp = last_edit_timestamp
