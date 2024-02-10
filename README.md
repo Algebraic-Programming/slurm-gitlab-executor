@@ -155,10 +155,10 @@ directly on your own Slurm cluster.
 Based on the [Slurm documentation](https://slurm.schedmd.com/sbatch.html#SECTION_INPUT-ENVIRONMENT-VARIABLES),
 with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 
-| GitLab CI variable             | CLI equivalent                                                                  | Supported  | Options / Format             | Default                                |
+| GitLab CI variable             | Corresponding sbatch parameter                                                  | Supported  | Options / Format             | Default                                |
 |--------------------------------|---------------------------------------------------------------------------------|:----------:|------------------------------|----------------------------------------|
 | CI_**SLURM_PARTITION**         | [-p / --partition](https://slurm.schedmd.com/sbatch.html#OPT_partition)         |     ✅     |                              |                                        |
-| CI_**SLURM_NNODES**            | [-N / --nodes](https://slurm.schedmd.com/sbatch.html#OPT_nodes)                 |     ✅     | *minnodes[-maxnodes]*      |                                        |
+| CI_**SLURM_NNODES**            | [-N / --nodes](https://slurm.schedmd.com/sbatch.html#OPT_nodes)                 |     ✅     | *minnodes[-maxnodes]*        |                                        |
 | CI_**SLURM_MEM_PER_NODE**      | [--mem](https://slurm.schedmd.com/sbatch.html#OPT_mem)                          |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_BIND**          | [--mem-bind](https://slurm.schedmd.com/sbatch.html#OPT_mem-bind)                |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_PER_CPU**       | [--mem-per-cpu](https://slurm.schedmd.com/sbatch.html#OPT_mem-per-cpu)          |     ✅     |                              |                                        |
@@ -196,7 +196,7 @@ with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 > **A:** Increase this GitLab variable: **Settings > CI/CD > Runners > edit-icon > Maximum job timeout**. This value is
 > the maximum time you expect your CI job to run + the time to schedule it on the cluster.
 
-> **Q:** My job is killed for timeout because the jobs stays _RUNNING_ for too long, what should I do ?
+> **Q:** My job is killed for timeout because the job stays _RUNNING_ for too long, what should I do ?
 >
 > **A:** Increase this Slurm variable: **CI_SLURM_TIMELIMIT** (format is days-hours:minutes:seconds).
 
