@@ -174,6 +174,8 @@ with every _SBATCH_VAR_ replaced by _SLURM_VAR_.
 | CI_**SLURM_CI_SLURM_NICE**     | [--nice](https://slurm.schedmd.com/sbatch.html#OPT_nice)                        |     ✅     |                              |                                        |
 | CI_**SLURM_MEM_PER_CPU**       | [--mem-per-cpu](https://slurm.schedmd.com/sbatch.html#OPT_mem-per-cpu)          |     ✅     |                              |                                        |
 | CI_**SLURM_COMMENT**           | [--comment](https://slurm.schedmd.com/sbatch.html#OPT_comment)                  |     ✅     |                              | `Automatic job created from GitLab CI` |
+| CI_**SLURM_ACCOUNT**           | [-A / --account](https://slurm.schedmd.com/sbatch.html#OPT_account)             |     ✅     |                              |                                        |
+| CI_**SLURM_QOS**               | [--qos](https://slurm.schedmd.com/sbatch.html#OPT_qos)                          |     ✅     |                              |                                        |
 | CI_**SLURM_GPUS**              | [-G / --gpus](https://slurm.schedmd.com/sbatch.html#OPT_gpus)                   |     ⌛     |                              |                                        |
 | CI_**SLURM_GPUS_PER_NODE**     | [--gpus-per-node](https://slurm.schedmd.com/sbatch.html#OPT_gpus-per-node)      |     ⌛     |                              |                                        |
 | CI_**SLURM_GPUS_PER_TASK**     | [--gpus-per-task](https://slurm.schedmd.com/sbatch.html#OPT_gpus-per-task)      |     ⌛     |                              |                                        |

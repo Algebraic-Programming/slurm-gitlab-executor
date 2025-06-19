@@ -248,6 +248,8 @@ class GitLabPhases:
             nice=GitLabJobInterface.get_env("CI_SLURM_NICE"),
             comment=GitLabJobInterface.get_env("CI_SLURM_COMMENT", "Automatic job created from GitLab CI"),
             chdir=GitLabJobInterface.get_build_dir_path(),
+            account=GitLabJobInterface.get_env("CI_SLURM_ACCOUNT"),
+            qos=GitLabJobInterface.get_env("CI_SLURM_QOS"),
             export="ALL",
             stdout_file="stdout.log",
             stderr_file="stderr.log"

@@ -146,6 +146,8 @@ class SLURMJobRequestData:
             export: str = None,
             stdout_file: str = None,
             stderr_file: str = None,
+            account: str = None,
+            qos: str = None,
     ):
         self.job_name = job_name
         self.nodes = nodes
@@ -168,6 +170,8 @@ class SLURMJobRequestData:
         self.export = export
         self.stdout_file = stdout_file
         self.stderr_file = stderr_file
+        self.account = account
+        self.qos = qos
 
     def get_cli_parameters(self) -> List[str]:
         parameters = [
@@ -192,6 +196,8 @@ class SLURMJobRequestData:
             f"--export={self.export}" if self.export is not None else None,
             f"--output={self.stdout_file}" if self.stdout_file is not None else None,
             f"--error={self.stderr_file}" if self.stderr_file is not None else None,
+            f"--account={self.account}" if self.account is not None else None,
+            f"--qos={self.qos}" if self.qos is not None else None,
         ]
         return [x for x in parameters if x is not None]
 
