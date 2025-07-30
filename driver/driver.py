@@ -250,6 +250,7 @@ class GitLabPhases:
             chdir=GitLabJobInterface.get_build_dir_path(),
             account=GitLabJobInterface.get_env("CI_SLURM_ACCOUNT"),
             qos=GitLabJobInterface.get_env("CI_SLURM_QOS"),
+            gpus=GitLabJobInterface.get_env("CI_SLURM_GPUS"),
             export="ALL",
             stdout_file="stdout.log",
             stderr_file="stderr.log"
