@@ -148,6 +148,7 @@ class SLURMJobRequestData:
             stderr_file: str = None,
             account: str = None,
             qos: str = None,
+            gpus: str = None,
     ):
         self.job_name = job_name
         self.nodes = nodes
@@ -172,6 +173,7 @@ class SLURMJobRequestData:
         self.stderr_file = stderr_file
         self.account = account
         self.qos = qos
+        self.gpus = gpus
 
     def get_cli_parameters(self) -> List[str]:
         parameters = [
@@ -198,6 +200,7 @@ class SLURMJobRequestData:
             f"--error={self.stderr_file}" if self.stderr_file is not None else None,
             f"--account={self.account}" if self.account is not None else None,
             f"--qos={self.qos}" if self.qos is not None else None,
+            f"--gpus={self.gpus}" if self.gpus is not None else None,
         ]
         return [x for x in parameters if x is not None]
 
